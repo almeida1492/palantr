@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="22dp"
+    android:paddingBottom="22dp"
+    android:background="@color/whiteBackground">
+
+    <TextView
+        android:id="@+id/vote_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_shape"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        tools:text="10"/>
+
+    <TextView
+        android:id="@+id/post_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="242dp"
+        android:minHeight="46dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toRightOf="@id/vote_counter"
+        android:textColor="@android:color/black"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel"/>
+
+    <TextView
+        android:id="@+id/post_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_body"
+        android:layout_toRightOf="@id/vote_counter"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        tools:text="Silvio Santos da Silva"/>
+
+    <TextView
+        android:id="@+id/post_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_body"
+        android:layout_toRightOf="@id/post_signature"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        tools:text=" - 10:00 ·"/>
+
+    <TextView
+        android:id="@+id/post_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_body"
+        android:layout_toRightOf="@id/post_time"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        tools:text=" 31/02/18"/>
+
+    <Button
+        android:id="@+id/vote_up"
+        android:layout_width="34dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@mipmap/vote_up"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/post_body"/>
+
+    <Button
+        android:id="@+id/vote_down"
+        android:layout_width="34dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="16dp"
+        android:background="@mipmap/vote_down"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/vote_up"/>
+
+</RelativeLayout>
