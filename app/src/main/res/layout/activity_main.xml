@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.test.android.palantr.MainActivity">
+    tools:context="com.test.android.palantr.Activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -26,7 +26,8 @@
                     android:layout_height="wrap_content"
                     style="@style/AppBarTitle"
                     android:textColor="@color/colorPrimaryDark"
-                    tools:text="Geral"/>
+                    android:text="Geral"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
