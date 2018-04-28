@@ -55,7 +55,7 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         return listItemView;
     }
 
-    private int getVoteCounterColor(int votes){
+    private int getVoteCounterColor(Long votes){
         if (votes >= 10){
             return ContextCompat.getColor(getContext(), R.color.colorSuccess);
         } else if (votes < 0){

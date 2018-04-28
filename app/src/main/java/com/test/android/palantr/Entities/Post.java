@@ -14,13 +14,13 @@ public class Post {
     Bitmap media;
     String signature;
     String topic;
-    int votes;
+    Long votes;
     int dates;
 
     public Post() {}
 
     public Post(int id_post, int creator, String body, Bitmap media, String signature, String topic,
-                int votes, int dates) {
+                Long votes, int dates) {
         this.id_post = id_post;
         this.creator = creator;
         this.body = body;
@@ -79,11 +79,11 @@ public class Post {
         this.topic = topic;
     }
 
-    public int getVotes() {
+    public Long getVotes() {
         return votes;
     }
 
-    public void setVotes(int votes) {
+    public void setVotes(Long votes) {
         this.votes = votes;
     }
 
