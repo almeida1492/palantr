@@ -15,12 +15,12 @@ public class Post {
     String signature;
     String topic;
     int votes;
-    int dates;
+    String date;
 
     public Post() {}
 
     public Post(int id_post, int creator, String body, Bitmap media, String signature, String topic,
-                int votes, int dates) {
+                int votes, String date) {
         this.id_post = id_post;
         this.creator = creator;
         this.body = body;
@@ -28,7 +28,7 @@ public class Post {
         this.signature = signature;
         this.topic = topic;
         this.votes = votes;
-        this.dates = dates;
+        this.date = date;
     }
 
     public int getId_post() {
@@ -87,11 +87,11 @@ public class Post {
         this.votes = votes;
     }
 
-    public int getDates() {
-        return dates;
+    public String getDate() {
+        return date;
     }
 
-    public void setDates(int dates) {
-        this.dates = dates;
+    public void setDate(String date) {
+        this.date = date;
     }
 }
