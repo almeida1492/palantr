@@ -14,6 +14,11 @@ import android.widget.TextView;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
 
 /**
@@ -29,7 +34,6 @@ public class PostListAdapter extends ArrayAdapter<Post> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         View listItemView = convertView;
 
         if (listItemView == null) {
@@ -38,7 +42,9 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         }
 
         Post currentPost = getItem(position);
+        //2009-06-01T13:45:30
 
+        //Vote counter rendering
         TextView voteCounterView = listItemView.findViewById(R.id.vote_counter);
         voteCounterView.setText(String.valueOf(currentPost.getVotes()));
 
@@ -46,11 +52,29 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
         voteCounterShape.setColor(voteCounterColor);
 
+        //Text body rendering
         TextView bodyView = listItemView.findViewById(R.id.post_body);
         bodyView.setText(currentPost.getBody());
 
+        //Signature rendering
         TextView signatureView = listItemView.findViewById(R.id.post_signature);
         signatureView.setText(currentPost.getSignature());
+
+        //Date and time rendering
+        JodaTimeAndroid.init(getContext());
+        String rawDate = currentPost.getDate();
+        LocalDate date = LocalDate.parse(rawDate.substring(0, 10));
+        LocalTime time = LocalTime.parse(rawDate.substring(11, 18));
+
+        String day = String.format("%02d", date.getDayOfMonth());
+        String month = String.format("%02d", date.getMonthOfYear());
+        String year = String.format("%d", date.getYear());
+        String hour = String.format("%02d", time.getHourOfDay());
+        String minute = String.format("%02d", time.getMinuteOfHour());
+
+        String output = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;
+        TextView dateView = listItemView.findViewById(R.id.post_date);
+        dateView.setText(output);
 
         return listItemView;
     }
