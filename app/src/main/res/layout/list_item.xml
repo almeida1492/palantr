@@ -36,7 +36,6 @@
             android:id="@+id/post_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:minHeight="46dp"
             android:layout_marginBottom="16dp"
             android:textColor="@android:color/black"
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/post_body"
             android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
+            android:textSize="10sp"
             tools:text="Henrique Ribeiros Almeida"/>
 
         <TextView
@@ -59,7 +58,7 @@
             android:layout_below="@id/post_body"
             android:layout_toEndOf="@id/post_signature"
             android:textColor="@android:color/darker_gray"
-            android:textSize="12sp"
+            android:textSize="10sp"
             tools:text=" - 10:00 · 31/02/18"/>
     </RelativeLayout>
 
@@ -73,14 +72,14 @@
 
         <Button
             android:id="@+id/vote_up"
-            android:layout_width="34dp"
+            android:layout_width="30dp"
             android:layout_height="23dp"
             android:layout_marginBottom="8dp"
             android:background="@mipmap/vote_up" />
 
         <Button
             android:id="@+id/vote_down"
-            android:layout_width="34dp"
+            android:layout_width="30dp"
             android:layout_height="23dp"
             android:background="@mipmap/vote_down" />
     </LinearLayout>
