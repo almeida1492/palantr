@@ -2,6 +2,10 @@ package com.test.android.palantr.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
@@ -12,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.test.android.palantr.Adapters.PostListAdapter;
 import com.test.android.palantr.Entities.Post;
+import com.test.android.palantr.IdlingResource.SimpleIdlingResource;
 import com.test.android.palantr.R;
 
 import java.util.ArrayList;
@@ -53,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
             }
             adapter = new PostListAdapter(activity, postsFromDb);
             postsView.setAdapter(adapter);
+            if (mIdlingResource != null) {
+                mIdlingResource.setIdleState(true);
+            }
         }
 
         @Override
@@ -61,12 +69,25 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Nullable
+    SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ArrayList<Post> posts = new ArrayList<>();
+        /* Necessary for testing
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 10L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet", null, "Anônimo", "", 5L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", -1L, "2009-06-01T13:45:30"));
@@ -77,11 +98,17 @@ public class MainActivity extends AppCompatActivity {
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
+        */
         adapter = new PostListAdapter(this, posts);
         postsView = findViewById(R.id.post_list);
         postsView.setAdapter(adapter);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
         databaseReference.addValueEventListener(valueEventListener);
 
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
     }
+
+
 }
