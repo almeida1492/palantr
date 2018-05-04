@@ -23,13 +23,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Post> postsFromDb = new ArrayList<>();
     PostListAdapter adapter;
     ListView postsView;
     Activity activity = this;
+
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
+            if (mIdlingResource != null) {
+                mIdlingResource.setIdleState(false);
+            }
+            ArrayList<Post> postsFromDb = new ArrayList<>();
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                 int id = Integer.parseInt(postSnapshot.getKey());
                 String body = null;
@@ -56,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 Post post = new Post(id, id, body, null, creator, topic, votes, "2009-06-01T13:45:30");
                 postsFromDb.add(post);
             }
-            adapter = new PostListAdapter(activity, postsFromDb);
-            postsView.setAdapter(adapter);
-            if (mIdlingResource != null) {
-                mIdlingResource.setIdleState(true);
-            }
+            onDone(postsFromDb);
         }
 
         @Override
@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Post> posts = new ArrayList<>();
+        getIdlingResource();
+
         /* Necessary for testing
+        ArrayList<Post> posts = new ArrayList<>();
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 10L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet", null, "Anônimo", "", 5L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", -1L, "2009-06-01T13:45:30"));
@@ -98,17 +100,29 @@ public class MainActivity extends AppCompatActivity {
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
         posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        */
         adapter = new PostListAdapter(this, posts);
         postsView = findViewById(R.id.post_list);
         postsView.setAdapter(adapter);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
-        databaseReference.addValueEventListener(valueEventListener);
+        */
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (mIdlingResource != null) {
             mIdlingResource.setIdleState(false);
         }
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
+        databaseReference.addValueEventListener(valueEventListener);
     }
 
+    public void onDone(ArrayList<Post> posts) {
+        adapter = new PostListAdapter(activity, posts);
+        postsView = findViewById(R.id.post_list);
+        postsView.setAdapter(adapter);
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(true);
+        }
+    }
 
 }

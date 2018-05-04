@@ -2,6 +2,7 @@ package com.test.android.palantr.IdlingResource;
 
 import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingResource;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,6 +33,7 @@ public class SimpleIdlingResource implements IdlingResource {
         ResourceCallback mCallback = this.mCallback;
         if (isIdleNow && mCallback != null) {
             mCallback.onTransitionToIdle();
+            Log.i("Test", "Idle");
         }
     }
 }
