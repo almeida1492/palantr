@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentInsetStart="0dp"/>
@@ -26,6 +27,7 @@
         android:layout_margin="16dp"
         android:hint="Digite aqui o teu texto"
         android:textColorHint="@android:color/darker_gray"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/appbar"/>
 
     <EditText
@@ -37,6 +39,7 @@
         android:textSize="12sp"
         android:hint="Assinatura"
         android:textColorHint="@android:color/darker_gray"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/post_body"/>
 
     <EditText
@@ -48,6 +51,7 @@
         android:textSize="12sp"
         android:hint="Tópico"
         android:textColorHint="@android:color/darker_gray"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/post_signature"/>
 
 </android.support.constraint.ConstraintLayout>
