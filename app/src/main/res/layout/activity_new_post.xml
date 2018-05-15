@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-</LinearLayout>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentInsetStart="0dp"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <EditText
+        android:id="@+id/post_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="Digite aqui o teu texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/appbar"/>
+
+    <EditText
+        android:id="@+id/post_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="12sp"
+        android:hint="Assinatura"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/post_body"/>
+
+    <EditText
+        android:id="@+id/post_topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="12sp"
+        android:hint="Tópico"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/post_signature"/>
+
+</android.support.constraint.ConstraintLayout>
