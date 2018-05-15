@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Palantr</string>
+
+    <!--menu-->
+    <string name="add_pic">Foto/Vídeo</string>
+    <string name="add_signature">Assinatura</string>
+    <string name="add_topic">Tópico</string>
+    <string name="send_post">Enviar</string>
 </resources>

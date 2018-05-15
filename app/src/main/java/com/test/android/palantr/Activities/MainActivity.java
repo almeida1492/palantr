@@ -1,12 +1,15 @@
 package com.test.android.palantr.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -104,6 +107,15 @@ public class MainActivity extends AppCompatActivity {
         postsView = findViewById(R.id.post_list);
         postsView.setAdapter(adapter);
         */
+
+        FloatingActionButton addPostButton = findViewById(R.id.fab);
+        addPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
