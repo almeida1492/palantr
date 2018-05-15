@@ -17,6 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
             app:contentInsetStart="0dp"/>
     </android.support.design.widget.AppBarLayout>
 
@@ -42,15 +43,15 @@
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/post_body"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/post_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:textSize="12sp"
-        android:hint="Tópico"
-        android:textColorHint="@android:color/darker_gray"
+        android:background="@color/colorPrimaryDark"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/post_signature"/>
 

@@ -6,8 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.test.android.palantr.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by henriquedealmeida on 10/05/18.
@@ -20,11 +25,23 @@ public class NewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
+        //Set up ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+        //Temporary spinner filling up
+        List<String> spinnerArray =  new ArrayList<String>();
+        spinnerArray.add("Geral");
+        spinnerArray.add("Segurança");
+        spinnerArray.add("Infraestrutura");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner sItems = findViewById(R.id.post_topic);
+        sItems.setAdapter(adapter);
     }
 
     @Override
