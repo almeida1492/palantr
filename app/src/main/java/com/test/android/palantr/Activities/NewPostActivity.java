@@ -50,7 +50,7 @@ public class NewPostActivity extends AppCompatActivity {
         spinnerArray.add("Segurança");
         spinnerArray.add("Infraestrutura");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
+                this, R.layout.spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems = findViewById(R.id.post_topic);
         sItems.setAdapter(adapter);
