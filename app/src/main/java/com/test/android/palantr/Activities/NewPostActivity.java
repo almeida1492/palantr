@@ -73,6 +73,7 @@ public class NewPostActivity extends AppCompatActivity {
                 return true;
             case R.id.send_post:
                 sendPost();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
