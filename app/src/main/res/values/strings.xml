@@ -6,4 +6,7 @@
     <string name="add_signature">Assinatura</string>
     <string name="add_topic">Tópico</string>
     <string name="send_post">Enviar</string>
+
+    <!--new post stuff-->
+    <string name="anonymous_post">Anônimo</string>
 </resources>

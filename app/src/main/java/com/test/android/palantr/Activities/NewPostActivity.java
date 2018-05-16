@@ -17,8 +17,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -86,13 +90,32 @@ public class NewPostActivity extends AppCompatActivity {
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
         Bitmap media = null;
+
         EditText postSignatureEt = findViewById(R.id.post_signature);
         String signature = postSignatureEt.getText().toString();
+        if (signature.equals("")){
+            signature = getString(R.string.anonymous_post);
+        }
+
         Spinner postTopicSp = findViewById(R.id.post_topic);
         String topic = postTopicSp.getSelectedItem().toString();
         Long votes = 0L;
-        String date = new Date().toString();
-        Post post = new Post(id_post, creator, body, media, signature, topic, votes, date);
+
+        //Treat current date string input
+        JodaTimeAndroid.init(this);
+        LocalDate date = new LocalDate();
+        LocalTime time = new LocalTime();
+
+        String day = String.format("%02d", date.getDayOfMonth());
+        String month = String.format("%02d", date.getMonthOfYear());
+        String year = String.format("%d", date.getYear());
+        String hour = String.format("%02d", time.getHourOfDay());
+        String minute = String.format("%02d", time.getMinuteOfHour());
+
+        String strDate = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;
+
+        Post post = new Post(id_post, creator, body, media, signature, topic, votes, strDate);
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
         databaseReference.push().setValue(post);
         Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();

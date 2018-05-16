@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import java.util.ArrayList;
 
 /**
@@ -58,8 +56,8 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         signatureView.setText(currentPost.getSignature());
 
         //Date and time rendering
-        JodaTimeAndroid.init(getContext());
-        String rawDate = currentPost.getDate();
+
+        String date = currentPost.getDate();
         /*
         LocalDate date = LocalDate.parse(rawDate.substring(0, 10));
         LocalTime time = LocalTime.parse(rawDate.substring(11, 18));
@@ -73,7 +71,7 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         String output = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;
         */
         TextView dateView = listItemView.findViewById(R.id.post_date);
-        dateView.setText(rawDate);
+        dateView.setText(date);
 
         return listItemView;
     }
