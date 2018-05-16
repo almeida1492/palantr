@@ -1,5 +1,6 @@
 package com.test.android.palantr.Activities;
 
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +8,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by henriquedealmeida on 10/05/18.
@@ -64,11 +72,29 @@ public class NewPostActivity extends AppCompatActivity {
 
                 return true;
             case R.id.send_post:
-
+                sendPost();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void sendPost() {
+        int id_post = new Random().nextInt();
+        int creator = new Random().nextInt();
+        EditText postBodyEt = findViewById(R.id.post_body);
+        String body = postBodyEt.getText().toString();
+        Bitmap media = null;
+        EditText postSignatureEt = findViewById(R.id.post_signature);
+        String signature = postSignatureEt.getText().toString();
+        Spinner postTopicSp = findViewById(R.id.post_topic);
+        String topic = postTopicSp.getSelectedItem().toString();
+        Long votes = 0L;
+        String date = new Date().toString();
+        Post post = new Post(id_post, creator, body, media, signature, topic, votes, date);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
+        databaseReference.push().setValue(post);
+        Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();
     }
 }
 

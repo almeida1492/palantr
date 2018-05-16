@@ -38,29 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
             ArrayList<Post> postsFromDb = new ArrayList<>();
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                int id = Integer.parseInt(postSnapshot.getKey());
-                String body = null;
-                String creator = null;
-                String topic = null;
-                Long votes = 0L;
-                for (DataSnapshot attributeSnapshot : postSnapshot.getChildren()) {
-                    switch (attributeSnapshot.getKey()) {
-                        case "body":
-                            body = String.valueOf(attributeSnapshot.getValue());
-                            break;
-                        case "creator":
-                            creator = String.valueOf(attributeSnapshot.getValue());
-                            break;
-                        case "topic":
-                            topic = String.valueOf(attributeSnapshot.getValue());
-                            break;
-                        case "votes":
-                            votes = (Long) attributeSnapshot.getValue();
-                            break;
-                    }
-                }
-                //TODO missing date
-                Post post = new Post(id, id, body, null, creator, topic, votes, "2009-06-01T13:45:30");
+                Post post = postSnapshot.getValue(Post.class);
                 postsFromDb.add(post);
             }
             onDone(postsFromDb);
