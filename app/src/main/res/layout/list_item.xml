@@ -3,87 +3,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="22dp"
-    android:paddingBottom="22dp"
-    android:orientation="horizontal"
-    android:background="@color/whiteBackground">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/vote_counter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/vote_counter_shape"
-            android:layout_marginTop="1dp"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            tools:text="10"/>
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3">
+        android:background="@color/whiteBackground"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="22dp"
+        android:paddingTop="22dp">
 
-        <TextView
-            android:id="@+id/post_body"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/vote_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/vote_counter_shape"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:text="10" />
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="46dp"
-            android:layout_marginBottom="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel"/>
+            android:layout_weight="3">
 
-        <TextView
-            android:id="@+id/post_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/post_body"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="10sp"
-            tools:text="Henrique Ribeiros Almeida"/>
+            <TextView
+                android:id="@+id/post_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:minHeight="46dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel" />
 
-        <TextView
-            android:id="@+id/post_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/post_body"
-            android:layout_toEndOf="@id/post_signature"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="10sp"
-            tools:text=" - 10:00 · 31/02/18"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/post_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/post_body"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10sp"
+                tools:text="Henrique Ribeiros Almeida" />
+
+            <TextView
+                android:id="@+id/post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/post_body"
+                android:layout_toEndOf="@id/post_signature"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10sp"
+                tools:text=" - 10:00 · 31/02/18" />
+        </RelativeLayout>
 
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/vote_up"
-            android:layout_width="30dp"
-            android:layout_height="23dp"
-            android:layout_marginBottom="8dp"
-            android:background="@mipmap/vote_up" />
+            <Button
+                android:id="@+id/vote_up"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
+                android:layout_marginBottom="8dp"
+                android:background="@mipmap/vote_up" />
 
-        <Button
-            android:id="@+id/vote_down"
-            android:layout_width="30dp"
-            android:layout_height="23dp"
-            android:background="@mipmap/vote_down" />
+            <Button
+                android:id="@+id/vote_down"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
+                android:background="@mipmap/vote_down" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
-
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 </LinearLayout>
