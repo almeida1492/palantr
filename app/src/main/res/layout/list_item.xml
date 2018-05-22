@@ -17,21 +17,24 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
+            android:layout_weight="0.8"
+            android:layout_marginTop="1dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/vote_counter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/vote_counter_shape"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                tools:text="10" />
+            <Button
+                android:id="@+id/vote_up"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
+                android:layout_marginBottom="8dp"
+                android:background="@mipmap/vote_up" />
+
+            <Button
+                android:id="@+id/vote_down"
+                android:layout_width="30dp"
+                android:layout_height="23dp"
+                android:background="@mipmap/vote_down" />
         </LinearLayout>
-
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -68,28 +71,23 @@
                 tools:text=" - 10:00 · 31/02/18" />
         </RelativeLayout>
 
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
 
-            <Button
-                android:id="@+id/vote_up"
-                android:layout_width="30dp"
-                android:layout_height="23dp"
-                android:layout_marginBottom="8dp"
-                android:background="@mipmap/vote_up" />
-
-            <Button
-                android:id="@+id/vote_down"
-                android:layout_width="30dp"
-                android:layout_height="23dp"
-                android:background="@mipmap/vote_down" />
+            <TextView
+                android:id="@+id/vote_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/vote_counter_shape"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:text="10" />
         </LinearLayout>
-
 
     </LinearLayout>
 
