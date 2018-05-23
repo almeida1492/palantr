@@ -66,6 +66,6 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@mipmap/ic_add_black_24dp" />
+        android:src="@mipmap/baseline_add_white_18" />
 
 </FrameLayout>
