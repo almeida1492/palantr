@@ -26,6 +26,9 @@ import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.IdlingResource.SimpleIdlingResource;
 import com.test.android.palantr.R;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Post> postsFromDb = new ArrayList<>();
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                 Post post = postSnapshot.getValue(Post.class);
-                postsFromDb.add(post);
+                postsFromDb.add(0, post);
             }
+            /*ArrayList<Post> sortedPosts = sortPosts(postsFromDb);*/
             onDone(postsFromDb);
         }
 
@@ -139,4 +143,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private ArrayList<Post> sortPosts(ArrayList<Post> postsFromDb) {
+        ArrayList<Post> sortedPosts = new ArrayList<>();
+        Post currentPost;
+        boolean isAdded;
+
+        currentPost = postsFromDb.get(0);
+        sortedPosts.add(currentPost);
+
+        for (int i = 1; i < postsFromDb.size(); i++){
+            isAdded = false;
+            int j = 0;
+
+            currentPost = postsFromDb.get(i);
+
+            //Get information to compare to settled posts in sortedPosts array
+            LocalDate currentPostDate = new LocalDate(currentPost.getDate());
+            LocalTime currentPostTime = new LocalTime(currentPost.getDate());
+            long currentPostVotes = currentPost.getVotes();
+
+            while (!isAdded){
+
+                //Get information to compare to currentPost
+                Post settledPost = sortedPosts.get(j);
+                LocalDate settledPostDate = new LocalDate(settledPost.getDate());
+                LocalTime settledPostTime = new LocalTime(settledPost.getDate());
+                long settledPostVotes = settledPost.getVotes();
+
+                if (currentPostDate.isEqual(settledPostDate)){
+
+                    if (currentPostVotes == settledPostVotes) {
+
+                        if (currentPostTime.isEqual(settledPostTime) ||
+                                currentPostTime.isBefore(settledPostTime)){
+
+                            sortedPosts.add(currentPost);
+                        } else {
+                            sortedPosts.add(i, currentPost);
+                        }
+                    } else if (currentPostVotes < settledPostVotes){
+                        sortedPosts.add(currentPost);
+                    } else {
+                        sortedPosts.add(i, currentPost);
+                    }
+                } else if (currentPostDate.isBefore(settledPostDate)){
+                    sortedPosts.add(currentPost);
+                } else {
+                    sortedPosts.add(i, currentPost);
+                }
+            }
+        }
+
+        return sortedPosts;
+    }
 }
