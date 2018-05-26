@@ -110,6 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
+        databaseReference.addValueEventListener(valueEventListener);
     }
 
     private void showLoading() {
@@ -123,16 +128,6 @@ public class MainActivity extends AppCompatActivity {
     private void showContent() {
         progressBar.setVisibility(View.INVISIBLE);
         postsView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mIdlingResource != null) {
-            mIdlingResource.setIdleState(false);
-        }
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
-        databaseReference.addValueEventListener(valueEventListener);
     }
 
     public void onDone(ArrayList<Post> posts) {
