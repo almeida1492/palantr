@@ -5,11 +5,14 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
@@ -36,11 +39,11 @@ public class PostListAdapter extends ArrayAdapter<Post> {
                     R.layout.list_item, parent, false);
         }
 
-        Post currentPost = getItem(position);
+        final Post currentPost = getItem(position);
         //2009-06-01T13:45:30
 
         //Vote counter rendering
-        TextView voteCounterView = listItemView.findViewById(R.id.vote_counter);
+        final TextView voteCounterView = listItemView.findViewById(R.id.vote_counter);
         voteCounterView.setText(String.valueOf(currentPost.getVotes()));
 
         GradientDrawable voteCounterShape = (GradientDrawable) voteCounterView.getBackground();
@@ -56,7 +59,6 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         signatureView.setText(currentPost.getSignature());
 
         //Date and time rendering
-
         String date = currentPost.getDate();
         /*
         LocalDate date = LocalDate.parse(rawDate.substring(0, 10));
@@ -72,6 +74,36 @@ public class PostListAdapter extends ArrayAdapter<Post> {
         */
         TextView dateView = listItemView.findViewById(R.id.post_date);
         dateView.setText(date);
+
+        final Long currentVotes = currentPost.getVotes();
+        Button voteUpButton = listItemView.findViewById(R.id.vote_up);
+        voteUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "vote up", Toast.LENGTH_SHORT).show();
+                Log.e("LOG", "click");
+                currentPost.setVotes(currentVotes + 1);
+                voteCounterView.setText(String.valueOf(currentPost.getVotes()));
+
+                GradientDrawable voteCounterShape = (GradientDrawable) voteCounterView.getBackground();
+                int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
+                voteCounterShape.setColor(voteCounterColor);
+            }
+        });
+
+        Button voteDownButton = listItemView.findViewById(R.id.vote_down);
+        voteDownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "vote down", Toast.LENGTH_SHORT).show();
+                currentPost.setVotes(currentVotes - 1);
+                voteCounterView.setText(String.valueOf(currentPost.getVotes()));
+
+                GradientDrawable voteCounterShape = (GradientDrawable) voteCounterView.getBackground();
+                int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
+                voteCounterShape.setColor(voteCounterColor);
+            }
+        });
 
         return listItemView;
     }

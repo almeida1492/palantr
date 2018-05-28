@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,7 @@ import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     PostsAdapter adapter;
     RecyclerView postsView;
@@ -213,5 +215,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return sortedPosts;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        long viewId = view.getId();
+
+        if (viewId == R.id.vote_up){
+            Toast.makeText(this, "voteup", Toast.LENGTH_SHORT).show();
+        }
+        if (viewId == R.id.vote_down) {
+            Toast.makeText(this, "votedown", Toast.LENGTH_SHORT).show();
+        }
     }
 }
