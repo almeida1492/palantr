@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
+import org.joda.time.LocalDateTime;
+
 import java.util.ArrayList;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -43,21 +45,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.bodyView.setText(currentPost.getBody());
         holder.signatureView.setText(currentPost.getSignature());
 
-        String date = currentPost.getDate();
-        /*
-        LocalDate date = LocalDate.parse(rawDate.substring(0, 10));
-        LocalTime time = LocalTime.parse(rawDate.substring(11, 18));
+        /*String date = currentPost.getDate();*/
+        LocalDateTime dateTime = LocalDateTime.parse(currentPost.getDate());
+        /*LocalTime time = LocalTime.parse(currentPost.getDate());*/
 
-        String day = String.format("%02d", date.getDayOfMonth());
-        String month = String.format("%02d", date.getMonthOfYear());
-        String year = String.format("%d", date.getYear());
-        String hour = String.format("%02d", time.getHourOfDay());
-        String minute = String.format("%02d", time.getMinuteOfHour());
+        String day = String.format("%02d", dateTime.getDayOfMonth());
+        String month = String.format("%02d", dateTime.getMonthOfYear());
+        String year = String.format("%d", dateTime.getYear());
+        String hour = String.format("%02d", dateTime.getHourOfDay());
+        String minute = String.format("%02d", dateTime.getMinuteOfHour());
 
         String output = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;
-        */
 
-        holder.dateView.setText(date);
+        holder.dateView.setText(output);
     }
 
     @Override
