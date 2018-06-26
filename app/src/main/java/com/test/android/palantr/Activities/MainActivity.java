@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,7 @@ import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     PostsAdapter adapter;
     RecyclerView postsView;
@@ -50,8 +52,12 @@ public class MainActivity extends AppCompatActivity {
                 Post post = postSnapshot.getValue(Post.class);
                 postsFromDb.add(0, post);
             }
-            /*ArrayList<Post> sortedPosts = sortPosts(postsFromDb);*/
-            onDone(postsFromDb);
+            if (postsFromDb.size() != 0){
+                ArrayList<Post> sortedPosts = sortPosts(postsFromDb);
+                onDone(sortedPosts);
+            } else {
+                onDone(postsFromDb);
+            }
         }
 
         @Override
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Post> sortPosts(ArrayList<Post> postsFromDb) {
+    public ArrayList<Post> sortPosts(ArrayList<Post> postsFromDb) {
         ArrayList<Post> sortedPosts = new ArrayList<>();
         Post currentPost;
         boolean isAdded;
@@ -153,42 +159,73 @@ public class MainActivity extends AppCompatActivity {
             currentPost = postsFromDb.get(i);
 
             //Get information to compare to settled posts in sortedPosts array
-            LocalDate currentPostDate = new LocalDate(currentPost.getDate());
-            LocalTime currentPostTime = new LocalTime(currentPost.getDate());
+            String strCurrentPostDate = currentPost.getDate().substring(0, 10);
+            String strCurrentPostTime = currentPost.getDate().substring(10);
+            LocalDate currentPostDate = new LocalDate(strCurrentPostDate);
+            LocalTime currentPostTime = new LocalTime(strCurrentPostTime);
             long currentPostVotes = currentPost.getVotes();
 
             while (!isAdded){
 
                 //Get information to compare to currentPost
                 Post settledPost = sortedPosts.get(j);
-                LocalDate settledPostDate = new LocalDate(settledPost.getDate());
-                LocalTime settledPostTime = new LocalTime(settledPost.getDate());
+                String strSettledPostDate = settledPost.getDate().substring(0, 10);
+                String strSettledPostTime = settledPost.getDate().substring(10);
+                LocalDate settledPostDate = new LocalDate(strSettledPostDate);
+                LocalTime settledPostTime = new LocalTime(strSettledPostTime);
                 long settledPostVotes = settledPost.getVotes();
 
                 if (currentPostDate.isEqual(settledPostDate)){
 
-                    if (currentPostVotes == settledPostVotes) {
+                    if (currentPostTime.getHourOfDay() == settledPostTime.getHourOfDay()){
 
-                        if (currentPostTime.isEqual(settledPostTime) ||
-                                currentPostTime.isBefore(settledPostTime)){
+                        if (currentPostVotes == settledPostVotes) {
 
-                            sortedPosts.add(currentPost);
+                            if (currentPostTime.getMinuteOfHour() <= settledPostTime.getMinuteOfHour()){
+
+                                j++;
+                            } else {
+                                sortedPosts.add(i, currentPost);
+                                isAdded = true;
+                            }
+                        } else if (currentPostVotes <= settledPostVotes){
+                            j++;
                         } else {
                             sortedPosts.add(i, currentPost);
+                            isAdded = true;
                         }
-                    } else if (currentPostVotes < settledPostVotes){
-                        sortedPosts.add(currentPost);
+                    } else if (currentPostTime.getHourOfDay() <= settledPostTime.getHourOfDay()){
+                        j++;
                     } else {
                         sortedPosts.add(i, currentPost);
+                        isAdded = true;
                     }
                 } else if (currentPostDate.isBefore(settledPostDate)){
-                    sortedPosts.add(currentPost);
+                    j++;
                 } else {
                     sortedPosts.add(i, currentPost);
+                    isAdded = true;
+                }
+
+                if (!isAdded && j == sortedPosts.size()){
+                    sortedPosts.add(currentPost);
+                    isAdded = true;
                 }
             }
         }
 
         return sortedPosts;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        long viewId = view.getId();
+
+        if (viewId == R.id.vote_up){
+            Toast.makeText(this, "voteup", Toast.LENGTH_SHORT).show();
+        }
+        if (viewId == R.id.vote_down) {
+            Toast.makeText(this, "votedown", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -19,8 +19,7 @@ import com.test.android.palantr.R;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +102,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         //Treat current date string input
         JodaTimeAndroid.init(this);
-        LocalDate date = new LocalDate();
+        /*LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
         String day = String.format("%02d", date.getDayOfMonth());
@@ -112,9 +111,11 @@ public class NewPostActivity extends AppCompatActivity {
         String hour = String.format("%02d", time.getHourOfDay());
         String minute = String.format("%02d", time.getMinuteOfHour());
 
-        String strDate = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;
+        String strDate = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;*/
 
-        Post post = new Post(id_post, creator, body, media, signature, topic, votes, strDate);
+        LocalDateTime dateTime = new LocalDateTime();
+
+        Post post = new Post(id_post, creator, body, media, signature, topic, votes, dateTime.toString());
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
         databaseReference.push().setValue(post);
