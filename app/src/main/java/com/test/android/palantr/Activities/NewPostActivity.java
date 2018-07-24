@@ -65,6 +65,7 @@ public class NewPostActivity extends AppCompatActivity {
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
 
         pictureView = findViewById(R.id.post_picture);
+        pictureView.setClipToOutline(true);
         pictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +198,9 @@ public class NewPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             media = (Bitmap) data.getExtras().get("data");
+
+
+
             pictureView.setImageBitmap(media);
             pictureView.setVisibility(View.VISIBLE);
             cancelPictureView.setVisibility(View.VISIBLE);
