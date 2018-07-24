@@ -13,6 +13,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
@@ -34,6 +35,8 @@ import org.joda.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+    private String LOG_TAG = MainActivity.class.getName();
 
     PostsAdapter adapter;
     RecyclerView postsView;
@@ -84,20 +87,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         getIdlingResource();
-
-        /* Necessary for testing
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 10L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet", null, "Anônimo", "", 5L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", -1L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        posts.add(new Post(1, 1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel", null, "Anônimo", "", 0L, "2009-06-01T13:45:30"));
-        */
-
 
         ArrayList<Post> posts = new ArrayList<>();
         adapter = new PostsAdapter(this, posts);
@@ -157,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             int j = 0;
 
             currentPost = postsFromDb.get(i);
-
+            Log.e(LOG_TAG, currentPost.getDate());
             //Get information to compare to settled posts in sortedPosts array
             String strCurrentPostDate = currentPost.getDate().substring(0, 10);
             String strCurrentPostTime = currentPost.getDate().substring(10);

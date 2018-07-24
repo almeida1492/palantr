@@ -1,14 +1,23 @@
 package com.test.android.palantr.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,6 +40,18 @@ import java.util.Random;
 
 public class NewPostActivity extends AppCompatActivity {
 
+    private String LOG_TAG = NewPostActivity.class.getName();
+
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+
+    private Bitmap media = null;
+    private ImageView pictureView;
+    private boolean isPictureFitToScreen = false;
+    private ImageView cancelPictureView;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +63,33 @@ public class NewPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+        pictureView = findViewById(R.id.post_picture);
+        pictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPictureFitToScreen) {
+                    isPictureFitToScreen=false;
+                    pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 250));
+                    pictureView.setAdjustViewBounds(true);
+                    pictureView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }else{
+                    isPictureFitToScreen=true;
+                    pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    pictureView.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
+            }
+        });
+
+        cancelPictureView = findViewById(R.id.post_cancel_picture);
+        cancelPictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pictureView.setVisibility(View.GONE);
+                cancelPictureView.setVisibility(View.GONE);
+                media = null;
+            }
+        });
 
         //Temporary spinner filling up
         List<String> spinnerArray =  new ArrayList<String>();
@@ -61,11 +109,20 @@ public class NewPostActivity extends AppCompatActivity {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.add_pic:
+
+                if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{android.Manifest.permission.CAMERA},
+                            MY_CAMERA_PERMISSION_CODE);
+                } else {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
 
                 return true;
             case R.id.add_signature:
@@ -88,7 +145,6 @@ public class NewPostActivity extends AppCompatActivity {
         int creator = new Random().nextInt();
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
-        Bitmap media = null;
 
         EditText postSignatureEt = findViewById(R.id.post_signature);
         String signature = postSignatureEt.getText().toString();
@@ -121,5 +177,32 @@ public class NewPostActivity extends AppCompatActivity {
         databaseReference.push().setValue(post);
         Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new
+                        Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            } else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            media = (Bitmap) data.getExtras().get("data");
+            pictureView.setImageBitmap(media);
+            pictureView.setVisibility(View.VISIBLE);
+            cancelPictureView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }
 

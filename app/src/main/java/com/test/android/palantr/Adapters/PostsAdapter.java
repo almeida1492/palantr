@@ -1,6 +1,14 @@
 package com.test.android.palantr.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.test.android.palantr.Entities.Post;
@@ -49,6 +58,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         voteCounterShape.setColor(voteCounterColor);
 
         holder.bodyView.setText(currentPost.getBody());
+
+        //TODO it has to get bitmap from currentPost instead
+        Bitmap rawPicture = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
+
+        if (rawPicture != null){
+            Bitmap roundedCornerPicture = getRoundedCornerBitmap(rawPicture);
+            holder.pictureView.setVisibility(View.VISIBLE);
+            holder.pictureView.setImageBitmap(roundedCornerPicture);
+        }
 
         holder.signatureView.setText(currentPost.getSignature());
 
@@ -124,6 +142,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView voteCounterView;
         public final TextView bodyView;
+        public final ImageView pictureView;
         public final TextView signatureView;
         public final TextView dateView;
         public final Button voteUpButton;
@@ -133,10 +152,33 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             super(itemView);
             voteCounterView = itemView.findViewById(R.id.vote_counter);
             bodyView = itemView.findViewById(R.id.post_body);
+            pictureView = itemView.findViewById(R.id.post_picture);
             signatureView = itemView.findViewById(R.id.post_signature);
             dateView = itemView.findViewById(R.id.post_date);
             voteUpButton = itemView.findViewById(R.id.vote_up);
             voteDownButton = itemView.findViewById(R.id.vote_down);
         }
+    }
+
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 12;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 }
