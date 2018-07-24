@@ -57,6 +57,8 @@
                 android:layout_height="150dp"
                 android:layout_below="@id/post_body"
                 android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_shape"
+                
                 android:visibility="gone"
                 android:scaleType="centerCrop"/>
 
