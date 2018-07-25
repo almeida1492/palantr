@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -69,16 +68,7 @@ public class NewPostActivity extends AppCompatActivity {
         pictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isPictureFitToScreen) {
-                    isPictureFitToScreen=false;
-                    pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 250));
-                    pictureView.setAdjustViewBounds(true);
-                    pictureView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                }else{
-                    isPictureFitToScreen=true;
-                    pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    pictureView.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
+
             }
         });
 
@@ -159,17 +149,6 @@ public class NewPostActivity extends AppCompatActivity {
 
         //Treat current date string input
         JodaTimeAndroid.init(this);
-        /*LocalDate date = new LocalDate();
-        LocalTime time = new LocalTime();
-
-        String day = String.format("%02d", date.getDayOfMonth());
-        String month = String.format("%02d", date.getMonthOfYear());
-        String year = String.format("%d", date.getYear());
-        String hour = String.format("%02d", time.getHourOfDay());
-        String minute = String.format("%02d", time.getMinuteOfHour());
-
-        String strDate = " - " + hour + ":" + minute + " · " + day + "/" + month + "/" + year;*/
-
         LocalDateTime dateTime = new LocalDateTime();
 
         Post post = new Post(id_post, creator, body, media, signature, topic, votes, dateTime.toString());
@@ -191,16 +170,12 @@ public class NewPostActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }
-
         }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             media = (Bitmap) data.getExtras().get("data");
-
-
-
             pictureView.setImageBitmap(media);
             pictureView.setVisibility(View.VISIBLE);
             cancelPictureView.setVisibility(View.VISIBLE);
