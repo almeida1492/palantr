@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/add_pic"
+        android:id="@+id/add_pic_from_gallery"
         android:icon="@mipmap/ic_photo_black_24dp"
         android:title="@string/add_pic"
         app:showAsAction="always"/>

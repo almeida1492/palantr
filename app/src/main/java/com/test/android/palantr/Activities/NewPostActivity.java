@@ -1,16 +1,25 @@
 package com.test.android.palantr.Activities;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +38,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.LocalDateTime;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,14 +52,12 @@ public class NewPostActivity extends AppCompatActivity {
 
     private String LOG_TAG = NewPostActivity.class.getName();
 
-    private static final int CAMERA_REQUEST = 1888;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
-
     private Bitmap media = null;
     private ImageView pictureView;
     private boolean isPictureFitToScreen = false;
     private ImageView cancelPictureView;
 
+    private int RESULT_LOAD_IMAGE = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -100,20 +109,17 @@ public class NewPostActivity extends AppCompatActivity {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.add_pic:
+            case R.id.add_pic_from_gallery:
 
-                if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{android.Manifest.permission.CAMERA},
-                            MY_CAMERA_PERMISSION_CODE);
-                } else {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                }
+                Intent intent = new Intent();
+                intent.setAction(android.content.Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
 
                 return true;
             case R.id.add_signature:
@@ -130,6 +136,40 @@ public class NewPostActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
+                && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+
+            if (cursor == null || cursor.getCount() < 1) {
+                return; // no cursor or no record. DO YOUR ERROR HANDLING
+            }
+
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+            if(columnIndex < 0) // no column index
+                return; // DO YOUR ERROR HANDLING
+
+            String picturePath = cursor.getString(columnIndex);
+
+            cursor.close(); // close cursor
+
+            Bitmap b = BitmapFactory.decodeFile(picturePath.toString());
+
+            pictureView.setImageBitmap(b);
+        }
+        else {
+            Toast.makeText(this, "ops", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public void sendPost() {
         int id_post = new Random().nextInt();
@@ -157,31 +197,5 @@ public class NewPostActivity extends AppCompatActivity {
         databaseReference.push().setValue(post);
         Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new
-                        Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            media = (Bitmap) data.getExtras().get("data");
-            pictureView.setImageBitmap(media);
-            pictureView.setVisibility(View.VISIBLE);
-            cancelPictureView.setVisibility(View.VISIBLE);
-        }
-    }
-
-
 }
 
