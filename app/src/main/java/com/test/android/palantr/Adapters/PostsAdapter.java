@@ -77,6 +77,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         holder.dateView.setText(output);
 
+        //TODO aqui contabiliza os votos no front. Falta fazer essa contabilização no back e também impedir que o usuário possa votar duas vezes no mesmo post
         holder.voteUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +87,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 GradientDrawable voteCounterShape = (GradientDrawable) holder.voteCounterView.getBackground();
                 int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
                 voteCounterShape.setColor(voteCounterColor);
+
             }
         });
 
