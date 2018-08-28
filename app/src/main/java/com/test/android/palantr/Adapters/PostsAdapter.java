@@ -1,8 +1,6 @@
 package com.test.android.palantr.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
@@ -77,12 +77,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         holder.dateView.setText(output);
 
-        //TODO aqui contabiliza os votos no front. Falta fazer essa contabilização no back e também impedir que o usuário possa votar duas vezes no mesmo post
         holder.voteUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentPost.setVotes(currentPost.getVotes() + 1);
                 holder.voteCounterView.setText(String.valueOf(currentPost.getVotes()));
+
+                String postKeyInDb = currentPost.getId_post();
+                DatabaseReference postInDb = FirebaseDatabase.getInstance().getReference()
+                        .child("posts").child(postKeyInDb);
+                postInDb.child("votes").setValue(currentPost.getVotes());
 
                 GradientDrawable voteCounterShape = (GradientDrawable) holder.voteCounterView.getBackground();
                 int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
@@ -96,6 +100,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             public void onClick(View v) {
                 currentPost.setVotes(currentPost.getVotes() - 1);
                 holder.voteCounterView.setText(String.valueOf(currentPost.getVotes()));
+
+                String postKeyInDb = currentPost.getId_post();
+                DatabaseReference postInDb = FirebaseDatabase.getInstance().getReference()
+                        .child("posts").child(postKeyInDb);
+                postInDb.child("votes").setValue(currentPost.getVotes());
 
                 GradientDrawable voteCounterShape = (GradientDrawable) holder.voteCounterView.getBackground();
                 int voteCounterColor = getVoteCounterColor(currentPost.getVotes());

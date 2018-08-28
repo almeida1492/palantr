@@ -8,18 +8,18 @@ import android.graphics.Bitmap;
 
 public class Post {
 
-    int id_post;
-    int creator;
-    String body;
-    Bitmap media;
-    String signature;
-    String topic;
-    Long votes;
-    String date;
+    private String id_post;
+    private int creator;
+    private String body;
+    private Bitmap media;
+    private String signature;
+    private String topic;
+    private Long votes;
+    private String date;
 
     public Post() {}
 
-    public Post(int id_post, int creator, String body, Bitmap media, String signature, String topic,
+    public Post(String id_post, int creator, String body, Bitmap media, String signature, String topic,
                 Long votes, String date) {
         this.id_post = id_post;
         this.creator = creator;
@@ -31,11 +31,11 @@ public class Post {
         this.date = date;
     }
 
-    public int getId_post() {
+    public String getId_post() {
         return id_post;
     }
 
-    public void setId_post(int id_post) {
+    public void setId_post(String id_post) {
         this.id_post = id_post;
     }
 

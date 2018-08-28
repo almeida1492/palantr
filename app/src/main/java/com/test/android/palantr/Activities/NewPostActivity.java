@@ -1,10 +1,6 @@
 package com.test.android.palantr.Activities;
 
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,14 +8,10 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +30,6 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.LocalDateTime;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -171,7 +161,6 @@ public class NewPostActivity extends AppCompatActivity {
 
 
     public void sendPost() {
-        int id_post = new Random().nextInt();
         int creator = new Random().nextInt();
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
@@ -190,10 +179,12 @@ public class NewPostActivity extends AppCompatActivity {
         JodaTimeAndroid.init(this);
         LocalDateTime dateTime = new LocalDateTime();
 
-        Post post = new Post(id_post, creator, body, media, signature, topic, votes, dateTime.toString());
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
-        databaseReference.push().setValue(post);
+        DatabaseReference postInDb = databaseReference.push();
+
+        Post post = new Post(postInDb.getKey(), creator, body, media, signature, topic, votes, dateTime.toString());
+        postInDb.setValue(post);
+
         Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();
     }
 }
