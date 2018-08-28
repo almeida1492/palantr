@@ -1,7 +1,5 @@
 package com.test.android.palantr.Entities;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by henriquedealmeida on 26/04/18.
  */
@@ -11,7 +9,7 @@ public class Post {
     private String id_post;
     private int creator;
     private String body;
-    private Bitmap media;
+    private String media;
     private String signature;
     private String topic;
     private Long votes;
@@ -19,7 +17,7 @@ public class Post {
 
     public Post() {}
 
-    public Post(String id_post, int creator, String body, Bitmap media, String signature, String topic,
+    public Post(String id_post, int creator, String body, String media, String signature, String topic,
                 Long votes, String date) {
         this.id_post = id_post;
         this.creator = creator;
@@ -55,11 +53,11 @@ public class Post {
         this.body = body;
     }
 
-    public Bitmap getMedia() {
+    public String getMedia() {
         return media;
     }
 
-    public void setMedia(Bitmap media) {
+    public void setMedia(String media) {
         this.media = media;
     }
 

@@ -1,14 +1,13 @@
 package com.test.android.palantr.Activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,8 +20,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
@@ -30,8 +35,12 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.LocalDateTime;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -42,7 +51,7 @@ public class NewPostActivity extends AppCompatActivity {
 
     private String LOG_TAG = NewPostActivity.class.getName();
 
-    private Bitmap media = null;
+    private Bitmap bitmap = null;
     private ImageView pictureView;
     private boolean isPictureFitToScreen = false;
     private ImageView cancelPictureView;
@@ -77,12 +86,12 @@ public class NewPostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 pictureView.setVisibility(View.GONE);
                 cancelPictureView.setVisibility(View.GONE);
-                media = null;
+                bitmap = null;
             }
         });
 
         //Temporary spinner filling up
-        List<String> spinnerArray =  new ArrayList<String>();
+        List<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Geral");
         spinnerArray.add("Segurança");
         spinnerArray.add("Infraestrutura");
@@ -105,11 +114,11 @@ public class NewPostActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_pic_from_gallery:
 
-                Intent intent = new Intent();
-                intent.setAction(android.content.Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, RESULT_LOAD_IMAGE);
+
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                Intent chooser = Intent.createChooser(galleryIntent, getString(R.string.choose_picture));
+                startActivityForResult(chooser, RESULT_LOAD_IMAGE);
 
                 return true;
             case R.id.add_signature:
@@ -130,32 +139,15 @@ public class NewPostActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
-                && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-
-            if (cursor == null || cursor.getCount() < 1) {
-                return; // no cursor or no record. DO YOUR ERROR HANDLING
+                && null != data.getData()) {
+            try {
+                InputStream stream = getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
+                pictureView.setImageBitmap(bitmap);
+                data.setData(null);
+            } catch (IOException | SecurityException e) {
+                Toast.makeText(this, "ops", Toast.LENGTH_SHORT).show();
             }
-
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-
-            if(columnIndex < 0) // no column index
-                return; // DO YOUR ERROR HANDLING
-
-            String picturePath = cursor.getString(columnIndex);
-
-            cursor.close(); // close cursor
-
-            Bitmap b = BitmapFactory.decodeFile(picturePath.toString());
-
-            pictureView.setImageBitmap(b);
-        }
-        else {
-            Toast.makeText(this, "ops", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -167,7 +159,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         EditText postSignatureEt = findViewById(R.id.post_signature);
         String signature = postSignatureEt.getText().toString();
-        if (signature.equals("")){
+        if (signature.equals("")) {
             signature = getString(R.string.anonymous_post);
         }
 
@@ -180,12 +172,47 @@ public class NewPostActivity extends AppCompatActivity {
         LocalDateTime dateTime = new LocalDateTime();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
-        DatabaseReference postInDb = databaseReference.push();
+        final DatabaseReference postInDb = databaseReference.push();
 
-        Post post = new Post(postInDb.getKey(), creator, body, media, signature, topic, votes, dateTime.toString());
+        final Post post = new Post(postInDb.getKey(), creator, body, null, signature, topic, votes, dateTime.toString());
+
+        if (bitmap != null) {
+            final StorageReference images = FirebaseStorage.getInstance().getReference();
+            byte[] bytes = convertBitmapToByteArray(bitmap);
+            UploadTask uploadTask = images.child(postInDb.getKey()).putBytes(bytes);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    Toast.makeText(getApplicationContext(), "Imagem enviada", Toast.LENGTH_SHORT).show();
+                }
+            });
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+
+                    // Continue with the task to get the download URL
+                    String mediaUrl = images.child(postInDb.getKey()).getDownloadUrl().toString();
+                    post.setMedia(mediaUrl);
+                    postInDb.child("media").setValue(mediaUrl);
+                    Toast.makeText(getApplicationContext(), "URL: " + mediaUrl, Toast.LENGTH_SHORT).show();
+                    return images.child(postInDb.getKey()).getDownloadUrl();
+                }
+            });
+
+        }
+
         postInDb.setValue(post);
 
         Toast.makeText(this, "Enviado", Toast.LENGTH_SHORT).show();
+    }
+
+    public byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        return baos.toByteArray();
     }
 }
 
