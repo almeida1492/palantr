@@ -135,18 +135,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public ArrayList<Post> sortPosts(ArrayList<Post> postsFromDb) {
         ArrayList<Post> sortedPosts = new ArrayList<>();
-        Post currentPost;
         boolean isAdded;
 
-        currentPost = postsFromDb.get(0);
-        sortedPosts.add(currentPost);
+        sortedPosts.add(postsFromDb.remove(0));
 
-        for (int i = 1; i < postsFromDb.size(); i++){
+        for (int i = 0; i < postsFromDb.size(); i++){
             isAdded = false;
             int j = 0;
 
-            currentPost = postsFromDb.get(i);
-            Log.e(LOG_TAG, currentPost.getDate());
+            Post currentPost = postsFromDb.get(i);
             //Get information to compare to settled posts in sortedPosts array
             String strCurrentPostDate = currentPost.getDate().substring(0, 10);
             String strCurrentPostTime = currentPost.getDate().substring(10);

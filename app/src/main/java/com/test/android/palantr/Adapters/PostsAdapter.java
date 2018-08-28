@@ -54,12 +54,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.bodyView.setText(currentPost.getBody());
 
         //TODO it has to get bitmap from currentPost instead
-        Bitmap rawPicture = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
+        /*Bitmap rawPicture = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder);
         if (rawPicture != null){
             holder.pictureView.setClipToOutline(true);
             holder.pictureView.setVisibility(View.VISIBLE);
             holder.pictureView.setImageBitmap(rawPicture);
-        }
+        }*/
 
         holder.signatureView.setText(currentPost.getSignature());
 
