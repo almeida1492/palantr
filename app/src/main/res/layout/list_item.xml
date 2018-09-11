@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/whiteBackground">
 
     <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/whiteBackground"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:paddingBottom="22dp"
+        android:paddingBottom="10dp"
         android:paddingTop="22dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
             android:layout_marginTop="1dp"
+            android:layout_weight="0.8"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -51,34 +51,6 @@
                 android:textSize="14sp"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pel" />
 
-            <ImageView
-                android:id="@+id/post_picture"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_below="@id/post_body"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/rounded_shape"
-                android:visibility="gone"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:id="@+id/post_signature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/post_picture"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="10sp"
-                tools:text="Henrique Ribeiros Almeida" />
-
-            <TextView
-                android:id="@+id/post_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/post_picture"
-                android:layout_toEndOf="@id/post_signature"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="10sp"
-                tools:text=" - 10:00 · 31/02/18" />
         </RelativeLayout>
 
         <LinearLayout
@@ -101,8 +73,42 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/post_picture"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/main"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone"
+        android:background="@drawable/rounded_shape"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/post_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_picture"
+        android:layout_marginLeft="65dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="10sp"
+        tools:text="Henrique Ribeiro Almeida" />
+
+    <TextView
+        android:id="@+id/post_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_picture"
+        android:layout_toEndOf="@id/post_signature"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="10sp"
+        tools:text=" - 10:00 · 31/02/18" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/post_signature"
+        android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray" />
-</LinearLayout>
+</RelativeLayout>
