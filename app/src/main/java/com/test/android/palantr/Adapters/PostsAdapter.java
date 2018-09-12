@@ -1,9 +1,13 @@
 package com.test.android.palantr.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.test.android.palantr.Activities.MainActivity;
+import com.test.android.palantr.Activities.PictureViewer;
 import com.test.android.palantr.Entities.Post;
 import com.test.android.palantr.R;
 
@@ -27,12 +35,15 @@ import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 
+import static java.security.AccessController.getContext;
+
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     private String LOG_TAG = PostsAdapter.class.getName();
 
     private Context mContext;
     private ArrayList<Post> mPosts;
+    private boolean isImageFitToScreen = false;
 
     public PostsAdapter(@NonNull Context context, ArrayList<Post> posts) {
         mContext = context;
@@ -66,10 +77,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.pictureView.setImageBitmap(bitmap);
                     holder.pictureView.setClipToOutline(true);
                     holder.pictureView.setVisibility(View.VISIBLE);
+                    holder.pictureView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, PictureViewer.class);
+                            intent.putExtra("content", currentPost.getMedia());
+                            mContext.startActivity(intent);
+                        }
+                    });
                 }
             });
         } else {
