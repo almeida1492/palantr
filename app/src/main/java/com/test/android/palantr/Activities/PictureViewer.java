@@ -3,14 +3,19 @@ package com.test.android.palantr.Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.test.android.palantr.R;
 import com.test.android.palantr.Utils.GlideApp;
 
@@ -68,20 +73,19 @@ public class PictureViewer extends AppCompatActivity {
         setContentView(R.layout.picture_viewer);
 
         mVisible = true;
-        /*mControlsView = findViewById(R.id.fullscreen_content_controls);*/
         mContentView = findViewById(R.id.fullscreen_content);
 
         Intent intent = getIntent();
         if (intent != null) {
-            String content = intent.getStringExtra("content");
-
-            //TODO recebi o .getMedia() do post aqui e tentei usar o Glide
-
-            GlideApp.with(PictureViewer.this)
-                    .load(content)
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.placeholder)
-                    .into(mContentView);
+            String postId = intent.getStringExtra("postId");
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(postId);
+            storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(final byte[] bytes) {
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    mContentView.setImageBitmap(bitmap);
+                }
+            });
         }
 
         // Set up the user interaction to manually show or hide the system UI.

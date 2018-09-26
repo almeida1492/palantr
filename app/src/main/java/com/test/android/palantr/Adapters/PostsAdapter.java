@@ -71,12 +71,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.bodyView.setText(currentPost.getBody());
 
         if (currentPost.getMedia() != null) {
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-                    .child(currentPost.getId_post());
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(currentPost.getId_post());
             Log.i("media", "Has media");
             storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
-                public void onSuccess(byte[] bytes) {
+                public void onSuccess(final byte[] bytes) {
                     final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     holder.pictureView.setImageBitmap(bitmap);
                     holder.pictureView.setClipToOutline(true);
@@ -85,7 +84,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(mContext, PictureViewer.class);
-                            intent.putExtra("content", currentPost.getMedia());
+
+                            intent.putExtra("postId", currentPost.getId_post());
                             mContext.startActivity(intent);
                         }
                     });
