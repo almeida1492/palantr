@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="topics_array">
+        <item>Geral</item>
+        <item>Música</item>
+        <item>Filmes</item>
+        <item>Livros</item>
+        <item>Política</item>
+        <item>Esportes</item>
+    </string-array>
+</resources>

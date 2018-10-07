@@ -38,8 +38,6 @@ import org.joda.time.LocalDateTime;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -91,12 +89,8 @@ public class NewPostActivity extends AppCompatActivity {
         });
 
         //Temporary spinner filling up
-        List<String> spinnerArray = new ArrayList<String>();
-        spinnerArray.add("Geral");
-        spinnerArray.add("Segurança");
-        spinnerArray.add("Infraestrutura");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, R.layout.spinner_item, spinnerArray);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.topics_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems = findViewById(R.id.post_topic);
         sItems.setAdapter(adapter);
