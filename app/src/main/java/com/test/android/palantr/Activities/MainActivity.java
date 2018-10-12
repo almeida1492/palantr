@@ -13,10 +13,11 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     RecyclerView postsView;
     ProgressBar progressBar;
     Activity activity = this;
+    String currentTopic;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
 
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -53,9 +56,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ArrayList<Post> postsFromDb = new ArrayList<>();
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                 Post post = postSnapshot.getValue(Post.class);
-                postsFromDb.add(0, post);
+                if (post!= null && post.getTopic() != null && post.getTopic().equals(currentTopic)) {
+                    postsFromDb.add(0, post);
+                }
             }
-            if (postsFromDb.size() != 0){
+            if (postsFromDb.size() != 0) {
                 ArrayList<Post> sortedPosts = sortPosts(postsFromDb);
                 onDone(sortedPosts);
             } else {
@@ -88,6 +93,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         getIdlingResource();
 
+        Spinner spinner = findViewById(R.id.topics_spinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.topics_array, R.layout.spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                currentTopic = (String) adapterView.getItemAtPosition(i);
+                databaseReference.addValueEventListener(valueEventListener);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                currentTopic = getResources().getStringArray(R.array.topics_array)[0];
+                databaseReference.addValueEventListener(valueEventListener);
+            }
+        });
+
         ArrayList<Post> posts = new ArrayList<>();
         adapter = new PostsAdapter(this, posts);
         postsView = findViewById(R.id.post_list);
@@ -108,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (mIdlingResource != null) {
             mIdlingResource.setIdleState(false);
         }
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
+
         databaseReference.addValueEventListener(valueEventListener);
     }
 
@@ -139,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         sortedPosts.add(postsFromDb.remove(0));
 
-        for (int i = 0; i < postsFromDb.size(); i++){
+        for (int i = 0; i < postsFromDb.size(); i++) {
             isAdded = false;
             int j = 0;
 
@@ -151,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             LocalTime currentPostTime = new LocalTime(strCurrentPostTime);
             long currentPostVotes = currentPost.getVotes();
 
-            while (!isAdded){
+            while (!isAdded) {
 
                 //Get information to compare to currentPost
                 Post settledPost = sortedPosts.get(j);
@@ -161,39 +186,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 LocalTime settledPostTime = new LocalTime(strSettledPostTime);
                 long settledPostVotes = settledPost.getVotes();
 
-                if (currentPostDate.isEqual(settledPostDate)){
+                if (currentPostDate.isEqual(settledPostDate)) {
 
-                    if (currentPostTime.getHourOfDay() == settledPostTime.getHourOfDay()){
+                    if (currentPostTime.getHourOfDay() == settledPostTime.getHourOfDay()) {
 
                         if (currentPostVotes == settledPostVotes) {
 
-                            if (currentPostTime.getMinuteOfHour() <= settledPostTime.getMinuteOfHour()){
+                            if (currentPostTime.getMinuteOfHour() <= settledPostTime.getMinuteOfHour()) {
 
                                 j++;
                             } else {
                                 sortedPosts.add(i, currentPost);
                                 isAdded = true;
                             }
-                        } else if (currentPostVotes <= settledPostVotes){
+                        } else if (currentPostVotes <= settledPostVotes) {
                             j++;
                         } else {
                             sortedPosts.add(i, currentPost);
                             isAdded = true;
                         }
-                    } else if (currentPostTime.getHourOfDay() <= settledPostTime.getHourOfDay()){
+                    } else if (currentPostTime.getHourOfDay() <= settledPostTime.getHourOfDay()) {
                         j++;
                     } else {
                         sortedPosts.add(i, currentPost);
                         isAdded = true;
                     }
-                } else if (currentPostDate.isBefore(settledPostDate)){
+                } else if (currentPostDate.isBefore(settledPostDate)) {
                     j++;
                 } else {
                     sortedPosts.add(i, currentPost);
                     isAdded = true;
                 }
 
-                if (!isAdded && j == sortedPosts.size()){
+                if (!isAdded && j == sortedPosts.size()) {
                     sortedPosts.add(currentPost);
                     isAdded = true;
                 }
@@ -207,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         long viewId = view.getId();
 
-        if (viewId == R.id.vote_up){
+        if (viewId == R.id.vote_up) {
             Toast.makeText(this, "voteup", Toast.LENGTH_SHORT).show();
         }
         if (viewId == R.id.vote_down) {

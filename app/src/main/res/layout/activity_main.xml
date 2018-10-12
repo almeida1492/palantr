@@ -36,6 +36,12 @@
                     android:layout_height="match_parent"
                     android:gravity="center">
 
+                    <Spinner
+                        android:id="@+id/topics_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <!--
                     <TextView
                         style="@style/AppBarTitle"
                         android:layout_width="wrap_content"
@@ -47,6 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_arrow_drop_down_black_24dp" />
+                        -->
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
@@ -66,8 +73,8 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="20dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
         android:src="@mipmap/baseline_add_white_18" />
 
 </FrameLayout>
