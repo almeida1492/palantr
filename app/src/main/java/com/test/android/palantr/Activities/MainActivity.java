@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         getIdlingResource();
 
-        Spinner spinner = findViewById(R.id.topics_spinner);
+        final Spinner spinner = findViewById(R.id.topics_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.topics_array, R.layout.spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,6 +111,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onNothingSelected(AdapterView<?> adapterView) {
                 currentTopic = getResources().getStringArray(R.array.topics_array)[0];
                 databaseReference.addValueEventListener(valueEventListener);
+            }
+        });
+
+        ImageView dropButton = findViewById(R.id.drop_button);
+        dropButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner.performClick();
             }
         });
 

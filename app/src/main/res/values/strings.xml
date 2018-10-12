@@ -10,4 +10,5 @@
     <!--new post stuff-->
     <string name="anonymous_post">Anônimo</string>
     <string name="choose_picture">Escolha uma imagem</string>
+    <string name="post_body_hint">Digite aqui o teu texto</string>
 </resources>
