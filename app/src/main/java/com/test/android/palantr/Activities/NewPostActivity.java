@@ -56,6 +56,9 @@ public class NewPostActivity extends AppCompatActivity {
     private boolean isPictureFitToScreen = false;
     private ImageView cancelPictureView;
 
+    private EditText postSignature;
+    private Spinner postTopic;
+
     private int RESULT_LOAD_IMAGE = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -70,6 +73,9 @@ public class NewPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+        postSignature = findViewById(R.id.post_signature);
+        postTopic = findViewById(R.id.post_topic);
 
         pictureView = findViewById(R.id.post_picture);
         pictureView.setClipToOutline(true);
@@ -122,10 +128,10 @@ public class NewPostActivity extends AppCompatActivity {
 
                 return true;
             case R.id.add_signature:
-
+                postSignature.requestFocus();
                 return true;
             case R.id.add_topic:
-
+                postTopic.performClick();
                 return true;
             case R.id.send_post:
                 sendPost();
