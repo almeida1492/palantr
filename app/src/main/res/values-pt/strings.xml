@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Palantr</string>
+
+    <!--menu-->
+    <string name="add_pic">Foto/Vídeo</string>
+    <string name="add_signature">Assinatura</string>
+    <string name="add_topic">Tópico</string>
+    <string name="send_post">Enviar</string>
+
+    <!--new post stuff-->
+    <string name="anonymous_post">Anônimo</string>
+    <string name="choose_picture">Escolha uma imagem</string>
+    <string name="post_body_hint">Digite aqui o teu texto</string>
+</resources>
