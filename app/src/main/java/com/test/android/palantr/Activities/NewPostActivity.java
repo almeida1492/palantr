@@ -197,7 +197,6 @@ public class NewPostActivity extends AppCompatActivity {
                     String mediaUrl = images.child(postInDb.getKey()).getDownloadUrl().toString();
                     post.setMedia(mediaUrl);
                     postInDb.child("media").setValue(mediaUrl);
-                    Toast.makeText(getApplicationContext(), "URL: " + mediaUrl, Toast.LENGTH_SHORT).show();
                     return images.child(postInDb.getKey()).getDownloadUrl();
                 }
             });
