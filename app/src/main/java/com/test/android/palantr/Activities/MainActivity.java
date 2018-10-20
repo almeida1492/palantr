@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ArrayList<Post> postsFromDb = new ArrayList<>();
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                 Post post = postSnapshot.getValue(Post.class);
-                if (post!= null && post.getTopic() != null && post.getTopic().equals(currentTopic)) {
+                String allTopic = getResources().getStringArray(R.array.topics_array)[0];
+                if (post!= null && post.getTopic() != null && (post.getTopic().equals(currentTopic)
+                        || currentTopic.equals(allTopic))) {
                     postsFromDb.add(0, post);
                 }
             }

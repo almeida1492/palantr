@@ -156,6 +156,9 @@ public class NewPostActivity extends AppCompatActivity {
         int creator = new Random().nextInt();
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
+        if (body.equals("")) {
+            return;
+        }
 
         EditText postSignatureEt = findViewById(R.id.post_signature);
         String signature = postSignatureEt.getText().toString();
