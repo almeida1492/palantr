@@ -7,4 +7,6 @@
     <color name="colorWarning">#3F88C5</color>
     <color name="colorDanger">#E94F37</color>
     <color name="whiteBackground">#FFFFFF</color>
+
+    <color name="blink">#EEEEEE</color>
 </resources>

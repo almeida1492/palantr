@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +72,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         holder.bodyView.setText(currentPost.getBody());
 
+        //Set blinkView color and visibility
+        holder.blinkView.setVisibility(View.INVISIBLE);
+        GradientDrawable blinkViewShape = (GradientDrawable) holder.blinkView.getBackground();
+        blinkViewShape.setColor(ContextCompat.getColor(mContext, R.color.blink));
+
         if (currentPost.getMedia() != null) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(currentPost.getId_post());
             Log.i("media", "Has media");
@@ -111,6 +118,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         holder.dateView.setText(output);
 
+        //Declare and set animation elements that are going to be used in the vote click events
+        final AlphaAnimation anim = new AlphaAnimation(0.5f, 0.0f);
+        anim.setDuration(3000);
+        anim.setRepeatMode(Animation.REVERSE);
+
         holder.voteUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +138,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
                 voteCounterShape.setColor(voteCounterColor);
 
+                holder.blinkView.startAnimation(anim);
             }
         });
 
@@ -143,6 +156,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 GradientDrawable voteCounterShape = (GradientDrawable) holder.voteCounterView.getBackground();
                 int voteCounterColor = getVoteCounterColor(currentPost.getVotes());
                 voteCounterShape.setColor(voteCounterColor);
+
+                holder.blinkView.startAnimation(anim);
             }
         });
     }
@@ -185,6 +200,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public final TextView dateView;
         public final Button voteUpButton;
         public final Button voteDownButton;
+        public final View blinkView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -195,6 +211,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             dateView = itemView.findViewById(R.id.post_date);
             voteUpButton = itemView.findViewById(R.id.vote_up);
             voteDownButton = itemView.findViewById(R.id.vote_down);
+            blinkView = itemView.findViewById(R.id.blink);
         }
     }
 }

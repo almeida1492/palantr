@@ -53,7 +53,7 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -69,7 +69,17 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 tools:text="10" />
-        </LinearLayout>
+
+            <View
+                android:id="@+id/blink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/vote_counter"
+                android:layout_alignBottom="@id/vote_counter"
+                android:layout_alignRight="@id/vote_counter"
+                android:layout_alignLeft="@id/vote_counter"
+                android:background="@drawable/vote_counter_shape"/>
+        </RelativeLayout>
 
     </LinearLayout>
 
