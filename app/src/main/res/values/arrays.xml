@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="topics_array">
-        <item>General</item>
-        <item>Music</item>
-        <item>Movies</item>
-        <item>Books</item>
-        <item>Politics</item>
+        <item>Geral</item>
+        <item>Cafeteria</item>
         <item>Sports</item>
+        <item>Campus</item>
+        <item>Classes</item>
+        <item>Activities</item>
+        <item>Safety</item>
+        <item>Announcements</item>
     </string-array>
 </resources>

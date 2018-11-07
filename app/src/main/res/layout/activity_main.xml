@@ -34,6 +34,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:orientation="vertical"
                     android:gravity="center">
 
                     <Spinner
@@ -42,24 +43,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
                         android:background="@android:color/transparent" />
 
                     <ImageView
                         android:id="@+id/drop_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="15dp"
                         android:src="@mipmap/ic_arrow_drop_down_black_24dp" />
-                    <!--
-                    <TextView
-                        style="@style/AppBarTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Geral"
-                        android:textColor="@color/colorPrimaryDark" />
-
-
-                        -->
                 </LinearLayout>
 
             </android.support.v7.widget.Toolbar>

@@ -2,10 +2,12 @@
 <resources>
     <string-array name="topics_array">
         <item>Geral</item>
-        <item>Música</item>
-        <item>Filmes</item>
-        <item>Livros</item>
-        <item>Política</item>
+        <item>Restaurante universitário</item>
         <item>Esportes</item>
+        <item>Estrutura do campus</item>
+        <item>Aulas</item>
+        <item>Atividades</item>
+        <item>Segurança</item>
+        <item>Comunicados</item>
     </string-array>
 </resources>

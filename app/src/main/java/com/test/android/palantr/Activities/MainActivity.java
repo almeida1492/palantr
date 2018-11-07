@@ -116,13 +116,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        ImageView dropButton = findViewById(R.id.drop_button);
+        /*ImageView dropButton = findViewById(R.id.drop_button);
         dropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner.performClick();
             }
-        });
+        });*/
 
         ArrayList<Post> posts = new ArrayList<>();
         adapter = new PostsAdapter(this, posts);
