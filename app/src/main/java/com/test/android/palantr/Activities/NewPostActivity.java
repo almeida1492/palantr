@@ -7,12 +7,10 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by henriquedealmeida on 10/05/18.
@@ -100,8 +98,7 @@ public class NewPostActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.topics_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = findViewById(R.id.post_topic);
-        sItems.setAdapter(adapter);
+        postTopic.setAdapter(adapter);
     }
 
     @Override
@@ -155,11 +152,7 @@ public class NewPostActivity extends AppCompatActivity {
 
 
     public void sendPost() {
-        String creatorId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        //TODO ALEX, precisa mudar o campo creator para aceitar String ao invés de int e por essa variável creatorId lá
-
-        int creator = new Random().nextInt();
+        String creator = UUID.randomUUID().toString();
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
         if (body.equals("")) {
