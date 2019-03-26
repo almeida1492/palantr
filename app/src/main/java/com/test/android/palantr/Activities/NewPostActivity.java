@@ -152,7 +152,7 @@ public class NewPostActivity extends AppCompatActivity {
 
 
     public void sendPost() {
-        String creator = UUID.randomUUID().toString();
+//        Long creator = UUID.randomUUID().toString();
         EditText postBodyEt = findViewById(R.id.post_body);
         String body = postBodyEt.getText().toString();
         if (body.equals("")) {
@@ -176,7 +176,7 @@ public class NewPostActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
         final DatabaseReference postInDb = databaseReference.push();
 
-        final Post post = new Post(postInDb.getKey(), creator, body, null, signature, topic, votes, dateTime.toString());
+        final Post post = new Post(postInDb.getKey(), 0L, body, null, signature, topic, votes, dateTime.toString());
 
         if (bitmap != null) {
             final StorageReference images = FirebaseStorage.getInstance().getReference();

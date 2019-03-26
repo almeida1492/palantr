@@ -83,19 +83,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             storageRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(final byte[] bytes) {
-                    final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    holder.pictureView.setImageBitmap(bitmap);
-                    holder.pictureView.setClipToOutline(true);
-                    holder.pictureView.setVisibility(View.VISIBLE);
-                    holder.pictureView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(mContext, PictureViewer.class);
+                    if (holder.getAdapterPosition() == position) {
+                        final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        holder.pictureView.setImageBitmap(bitmap);
+                        holder.pictureView.setClipToOutline(true);
+                        holder.pictureView.setVisibility(View.VISIBLE);
+                        holder.pictureView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(mContext, PictureViewer.class);
 
-                            intent.putExtra("postId", currentPost.getId_post());
-                            mContext.startActivity(intent);
-                        }
-                    });
+                                intent.putExtra("postId", currentPost.getId_post());
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
                 }
             });
         } else {
@@ -201,6 +203,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public final Button voteUpButton;
         public final Button voteDownButton;
         public final View blinkView;
+        public int currentPositionHolded;
 
         public ViewHolder(View itemView) {
             super(itemView);

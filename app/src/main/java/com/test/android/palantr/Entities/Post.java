@@ -7,7 +7,7 @@ package com.test.android.palantr.Entities;
 public class Post {
 
     private String id_post;
-    private String creator;
+    private Long creator;
     private String body;
     private String media;
     private String signature;
@@ -17,7 +17,7 @@ public class Post {
 
     public Post() {}
 
-    public Post(String id_post, String creator, String body, String media, String signature, String topic,
+    public Post(String id_post, Long creator, String body, String media, String signature, String topic,
                 Long votes, String date) {
         this.id_post = id_post;
         this.creator = creator;
@@ -37,11 +37,11 @@ public class Post {
         this.id_post = id_post;
     }
 
-    public String getCreator() {
+    public Long getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(Long creator) {
         this.creator = creator;
     }
 
