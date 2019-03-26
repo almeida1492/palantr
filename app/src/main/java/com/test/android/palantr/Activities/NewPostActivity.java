@@ -33,6 +33,8 @@ import com.test.android.palantr.R;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 
 import java.io.ByteArrayOutputStream;
@@ -171,7 +173,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         //Treat current date string input
         JodaTimeAndroid.init(this);
-        LocalDateTime dateTime = new LocalDateTime();
+        LocalDateTime dateTime = new LocalDateTime(DateTimeZone.forID("America/Sao_Paulo"));
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("posts");
         final DatabaseReference postInDb = databaseReference.push();
